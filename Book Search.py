@@ -1,142 +1,39 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[170]:
-
-
-
-#reads library data like Title, Author, Genre, Read, and Location
+#Imports pandas package
 import pandas as pd
+
+#Reads library data like Title, Author, Genre, Read Status, Location on bookshelf, Description and Setting
 books = pd.read_csv('Library.csv' ,sep = ',')
+
+#Returns first 5 rows of librabry
 books.head()
+
+#Turns primary key into index for easier searching
 books.set_index("Title")
 
 
-# In[22]:
 
+#PART 1: Organization of Library
 
-#PART 1
-#Problem: organize by library to avoid double purchases, rereading same bo
-#user inputs name of book
-#output is book information
-#user wants to read book they haven't read before of a certain genre
-#What book should I read
-#Feature 1: Type in title and get information
-#Feature 2: Type in genre and if i read it and get info
-
-
-# In[241]:
-
-
-#What is my favorite genre?
+#What are the most common genres found in this library?
 books["Genre"].value_counts()
 
-
-# In[115]:
-
-
-#shows count of each title to see what books I have several copies of
+#How many copies of each book can be found in this library? 
 books['Title'].value_counts()
 
-
-# In[172]:
-
-
-#General Search by Title
+#Searches library based on specific book title, then returns the location on bookshelf, along with other relevant info on the book.
 user_search=str(input("Hi Makhimba! Please tell me what book you are looking for! "))
-
 book_info=books[books['Title']== user_search]
-
 print(book_info)
 
 
-# In[108]:
+#PART 2: Generates book for user to read
 
+#Step 1: Shows user available genres, descriptions and settings.
+#Step 2: Asks user to input genres, description and setting based on what they are in the mood for.
 
-#PART 2
-#What book should I read?
-#1 What genre do you feel like reading?
-#Here are possible genres
-#Input /choose genre
-#2 What vibe are you looking for?
-##Here are possible vibes
-#Input /choose Vibe
-#3Where do you want this bok to take you?
-#Here are possible settings
-#Input/choose setting
-#Do you want to read something new?
-#Input yes or no
-#Output:here is possible books for you
-
-
-# In[147]:
-
-
-#What book should I read?
-#Possible genres and user input chosen genre?
-print("Here are all the available genres",books["Genre"].unique())
-genre_user_search=str(input("What genre do you want to read?"))
-#Here are possible genres
-#Input /choose genre
-genre_user_answer=books[books['Genre']==genre_user_search]
-print(genre_user_answer)
-
-
-#return all possible books
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[176]:
-
-
-print("Here are all the available genres",books["Genre"].unique())
-genre_user_search=str(input("What genre do you want to read?"))
-genre_user_answer=books[books['Genre']==genre_user_search]
-
-print("Here are all the available descriptions",books["Description"].unique())
-descr_user_search=str(input("What sort of story are you in the mood for?"))
-descr_user_answer=books[books['Description']==descr_user_search]
-
-print("Here are all the available Settings",books["Setting"].unique())
-setting_user_search=str(input("Where would you like this book to take you?"))
-setting_user_answer=books[books['Setting']==setting_user_search]
-
-print("Type one of the below",books["Read"].unique())
-read_user_search=str(input("Do you want to read something new?"))
-read_user_answer=books[books['Read']!=read_user_search]
-
-
-you_should_read=books[(books['Genre']==genre_user_search)&(books['Description']==descr_user_search)&(books['Setting']==setting_user_search)&(books['Read']!=read_user_search)]
-print("You should read", you_should_read)
-
-
-# In[177]:
-
-
-#most basic version
 print("Here are all the available genres",books["Genre"].unique())
 genre_user_search=str(input("What genre do you want to read?"))
 print("Here are all the available descriptions",books["Description"].unique())
@@ -145,44 +42,25 @@ print("Here are all the available Settings",books["Setting"].unique())
 setting_user_search=str(input("Where would you like this book to take you?"))
 print("Type one of the below",books["Read"].unique())
 read_user_search=str(input("Do you want to read something new?"))
-you_should_read=books[(books['Genre']==genre_user_search)&(books['Description']==descr_user_search)&(books['Setting']==setting_user_search)&(books['Read']!=read_user_search)]
+
+#Step 3: Combines user input of genre, description, setting and if the user wants to read a new title or one they've already read to 
+# generate all possible titles that user may be good picks for reader at that moment.
+
+you_should_read = books[(books['Genre']==genre_user_search)&
+                      (books['Description']==descr_user_search)&
+                      (books['Setting']==setting_user_search)&
+                      (books['Read']!=read_user_search)]
 print("You should read", you_should_read)
 
+#PART 3: Additional Capabilites 
 
-# In[238]:
+#Capability 1
 
-
-#psuedo code for additional capabilities
-#version with waterfall elimination
-print("Here are all the available genres",books["Genre"].unique())
-genre_user_search=str(input("What genre do you want to read?"))
-
-#print descriptions for only genre that was input above
-print("Here are all the available descriptions",books["Description"].unique())
-descr_user_search=str(input("What sort of story are you in the mood for?"))
-#print settings for only genre and descriptions that was input above
-print("Here are all the available Settings",books["Setting"].unique())
-setting_user_search=str(input("Where would you like this book to take you?"))
-print("Type one of the below",books["Read"].unique())
-read_user_search=str(input("Do you want to read something new?"))
-you_should_read=books[(books['Genre']==genre_user_search)&(books['Description']==descr_user_search)&(books['Setting']==setting_user_search)&(books['Read']!=read_user_search)]
-print("You should read", you_should_read)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+# The current working version of this program is a bit analoguous and can be improved using a waterfall of elimination.
+# Presently, when asking for user input to narrow down the program's search it returns all possible values within the librabry for each category. 
+# Ideally, after the user inputs a genre, only descriptions that fall under the selected Genre should show up, then when user inputs a Setting, only Settings that 
+#fall under the prior 2 inputs would show up. 
+#This additional feature would prevent user from having to go through entire search process if no book is available that matches the prior search term.
+#For example, if user selects the 'Fantasy' genre, when asked to select a description, there are only 7 unique options but the program returns all the unique 
+#options for the entire library. This creates the possiblity for the user to select a decription that is not related to a fantasy book which breaks the program.
 
