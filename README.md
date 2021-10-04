@@ -1,7 +1,7 @@
 # Book-Search-Program
 
 
-* This tool was developed to help organize a library of over 2000 books.
+* This tool was developed to help organize a library of over 200 books.
 
 * The original data set features the Title, Author, Description, Setting, Location and Read status of each book.
 
